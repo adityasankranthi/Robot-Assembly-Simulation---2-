@@ -32,23 +32,32 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 		
 		// 1. The "functions" and "parts" arrays must not be null.
 		// TODO
+		if (functions == null || parts == null) return report("functions or parts array is null");
 		
 		// 2. The "functions" and "parts" arrays are always the same length.
 		// TODO
+		if (functions.length != parts.length) return report("functions and parts are not of equal length");
 		
 		// 3. The size cannot be negative or greater than the length of the arrays.
 		// TODO
+		if (size < 0 || size > functions.length) return report("The size is negative or greater than the length of the array");
 		
 		// 4. None of the first “size” elements of either array can be null. (ie. no holes)
 		// TODO
+		for (int i = 0; i < size; i++) {
+			if (functions[i] == null || parts[i] == null) {
+				return report("Data at index " + i + " is null");
+			}
+		}
 		
 		// 5. The current index cannot be negative or greater than the size.
 		// TODO
+		if (currentIndex < 0 || currentIndex > size) return report("The current index is negative or greater than the size");
 		
 		// 6. If the function is not null and the current index is less than the size, then the
 		// function array must agree with the field at the current index.
 		// TODO
-		
+		if (function != null && currentIndex < size && !functions[currentIndex].equals(function)) return report("function array does not agree with the field at the current index.");
 		// If no problems discovered, return true
 		return true;
 	}
