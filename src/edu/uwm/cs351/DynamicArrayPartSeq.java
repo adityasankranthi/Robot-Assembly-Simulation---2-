@@ -71,6 +71,15 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	private void ensureCapacity(int cap) {
 		// TODO: Follow activity but update to handle two arrays at once (same length)
+		if (functions.length < cap || parts.length < cap) {
+            int newCap = Math.max(cap, functions.length * 2);
+            String[] newFunctions = new String[newCap];
+            Part[] newParts = new Part[newCap];
+            System.arraycopy(functions, 0, newFunctions, 0, size);
+            System.arraycopy(parts, 0, newParts, 0, size);
+            functions = newFunctions;
+            parts = newParts;
+        }
 	}
 	
 	private DynamicArrayPartSeq(boolean ignored) {} // do not change this constructor
@@ -90,6 +99,11 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public DynamicArrayPartSeq(int cap) {
 		// TODO
+		parts = new Part[cap];
+		functions = new String[cap];
+		size = 0;
+		currentIndex = -1;
+		function = null;
 		assert wellFormed() : "invariant broken by constructor";
 	}
 	
@@ -99,7 +113,7 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public int size() {
 		assert wellFormed() : "invariant broken in size";
-		return -1; // TODO: very easy
+		return size; // TODO: very easy
 	}
 	
 	/**
@@ -108,6 +122,7 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	public void start() {
 		// not asserting invariant before this will be done by the other start
 		start(null);
+		
 	}
 	
 	// TODO: A private helper method.  Define once you find yourself
@@ -158,6 +173,7 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public void removeCurrent() {
 		// TODO: lots to do
+		
 	}
 	
 	/**
