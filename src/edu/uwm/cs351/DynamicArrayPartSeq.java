@@ -71,6 +71,10 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	private void ensureCapacity(int cap) {
 		// TODO: Follow activity but update to handle two arrays at once (same length)
+		if (cap < 0) {
+			throw new IllegalArgumentException("capacity is negative: "
+					+ cap);
+		}
 		if (functions.length < cap || parts.length < cap) {
             int newCap = Math.max(cap, functions.length * 2);
             String[] newFunctions = new String[newCap];
@@ -99,12 +103,16 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public DynamicArrayPartSeq(int cap) {
 		// TODO
+		if (cap < 0) {
+			throw new IllegalArgumentException("capacity is negative: "
+					+ cap);
+		}
 		parts = new Part[cap];
 		functions = new String[cap];
 		size = 0;
-		currentIndex = -1;
+		currentIndex = 0;
 		function = null;
-		assert wellFormed() : "invariant broken by constructor";
+		assert wellFormed() : "failed in constructor";
 	}
 	
 	/**
@@ -112,7 +120,7 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 * @return number of elements in sequence
 	 */
 	public int size() {
-		assert wellFormed() : "invariant broken in size";
+		assert wellFormed() : "failed in size";
 		return size; // TODO: very easy
 	}
 	
@@ -134,6 +142,15 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public void start(String function) {
 		// TODO: don't forget to assert the invariant twice: before and after
+        assert wellFormed() : "failed before start";
+        currentIndex = 0;
+        for (int i = 0; i < size; i++) {
+        	if (this.function.equals(function)) {
+        		currentIndex = i;
+        		break;
+        	}
+        }
+        assert wellFormed() : "failed after start";
 	}
 	
 	/**
@@ -141,7 +158,10 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 * @return whether there is a current element
 	 */
 	public boolean isCurrent() {
-		return false; // TODO (and don't forget to assert invariant)
+        assert wellFormed() : "failed in isCurrent";
+        return currentIndex >= 0 && currentIndex < size; // TODO (and don't forget to assert invariant)
+        
+
 	}
 	
 	/**
@@ -151,7 +171,11 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 * @throws IllegalStateException if there is no current element
 	 */
 	public Part getCurrent() {
-		return null; // TODO (don't forget to assert the invariant)
+		assert wellFormed() : "failed in getCurrent";
+        if (!isCurrent()) {
+            throw new IllegalStateException("current element does not exist");
+        }
+        return parts[currentIndex]; // TODO (don't forget to assert the invariant)
 	}
 	
 	/**
