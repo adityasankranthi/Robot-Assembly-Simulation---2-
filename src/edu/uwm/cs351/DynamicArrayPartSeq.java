@@ -326,6 +326,15 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 			throw new AssertionError("forgot to implement cloneable?");
 		}
 		// TODO: extra work
+		result.currentIndex = this.currentIndex;
+		result.function = this.function;
+		result.size = this.size;
+        result.functions = new String[result.size];
+        result.parts = new Part[result.size];
+		for (int i = 0; i< this.size; i++) {
+			result.functions[i] = this.functions[i];
+			result.parts[i] = this.parts[i];
+		}
 		assert result.wellFormed() : "invariant broken in result of clone";
 		assert wellFormed() : "invariant broken by clone";
 		return result;
