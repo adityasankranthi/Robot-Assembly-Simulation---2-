@@ -217,7 +217,6 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	            }
 	        }
 	    }
-
 	    assert wellFormed() : "invariant broken by advance";
 	}
 
@@ -229,7 +228,28 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	 */
 	public void removeCurrent() {
 		// TODO: lots to do
-		
+	    assert wellFormed() : "invariant broken in removeCurrent";
+
+		if (!isCurrent()) throw new IllegalStateException("no current element");
+		for (int i = currentIndex; i < size - 1; i++) {
+            functions[i] = functions[i + 1];
+            parts[i] = parts[i + 1];
+        }
+        size--;
+        if (!functions[currentIndex].equals(function) && function!= null) {
+            // If the current function doesn't match, find the next matching function
+            for (int i = currentIndex; i < size; i++) {
+                if (functions[i].equals(function)) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+            // if matching function not found set currenIndex = size;
+            if (!functions[currentIndex].equals(function)) {
+                currentIndex = size;
+            }
+        }
+	    assert wellFormed() : "invariant broken by removeCurrent";
 	}
 	
 	/**
