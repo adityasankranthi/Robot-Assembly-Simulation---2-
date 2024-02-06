@@ -79,7 +79,13 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 					+ cap);
 		}
 		if (functions.length < cap || parts.length < cap) {
-            int newCap = Math.max(cap, functions.length * 2);
+			int newCap;
+			if (cap > functions.length) {
+				newCap = cap;
+			}
+			else {
+				newCap = functions.length * 2;
+			}
             String[] newFunctions = new String[newCap];
             Part[] newParts = new Part[newCap];
             for (int i = 0; i < size; i++) {
@@ -203,20 +209,21 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	public void advance() {
 	    assert wellFormed() : "invariant broken in advance";
 
-	    if (!isCurrent()) {
+	    if (!isCurrent())
 	        throw new IllegalStateException("No current element to advance");
-	    }
-	    currentIndex++;
 
-	    // If function is not null and currentIndex is within bounds
-	    if (function != null && currentIndex < size) {
-	        // Use a for loop to iterate through the elements from currentIndex to size - 1
-	        for (; currentIndex < size; currentIndex++) {
-	            if (functions[currentIndex].equals(function)) {
-	                break; // Exit the loop if the next part with the specified function is found
+	    if (function == null) {
+	        currentIndex++;
+	    } else {
+	        for (int i = currentIndex + 1; i < size; i++) {
+	            if (functions[i].equals(function)) {
+	                currentIndex = i;
+	                return; // Exit the method once the function is found
 	            }
 	        }
+	        currentIndex = size; // Function not found, set currentIndex to size
 	    }
+
 	    assert wellFormed() : "invariant broken by advance";
 	}
 
@@ -344,6 +351,11 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	public boolean addPart(String function, Part part) {
 		assert wellFormed() : "invariant broken in addPart";
 		// TODO: mainly do the work with public methods
+		if (function == null) throw new NullPointerException("function can't be null");
+		if (part == null) throw new NullPointerException("part can't be null");
+        this.function = function;
+        currentIndex = size; // cursor is moved to the end where the part is added
+		addAfter(part);
 		assert wellFormed() : "invariant broken by addPart";
 		return true;
 	}
@@ -353,6 +365,10 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 		assert wellFormed() : "invariant broken in removePart";
 		Part result = null;
 		// TODO: mainly do the work with public methods
+		start(function);
+        if (!isCurrent()) return null;
+        result = getCurrent();
+        removeCurrent();
 		assert wellFormed() : "invariant broken by removePart";
 		return result;
 	}
@@ -361,7 +377,16 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
 	public Part getPart(String function, int index) {
 		assert wellFormed() : "invariant broken in getPart";
 		// TODO: use public methods
-		return null;
+		if (index < 0) {
+            throw new IllegalArgumentException("Index cannot be negative.");
+        }
+
+		start(function); // Start the sequence with the given function
+	    for (int i = 0; i < index; i++) {
+	    	if (!isCurrent()) return null; // If no current element, return null
+	    	advance();
+	    }
+	    return isCurrent() ? getCurrent() : null; // Return the current part if any, else return null
 	}
 
 	/**
