@@ -256,8 +256,8 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
         assert wellFormed() : "invariant broken in addBefore";
 
         // Ensure that a function is defined
-        if (function == null) throw new IllegalStateException("No function defined");
-
+        if (p == null) throw new NullPointerException("No function defined");
+//        if (function == null) throw new Illegal("No function defined");
         // Ensure that the size doesn't exceed the maximum allowed value
         if (size + 1 > Integer.MAX_VALUE) throw new OutOfMemoryError("Capacity beyond the maximum memory");
 
