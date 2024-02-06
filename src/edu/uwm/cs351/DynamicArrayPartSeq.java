@@ -290,6 +290,7 @@ public class DynamicArrayPartSeq implements Robot, Cloneable {
      */
     public void addAfter(Part p) {
         assert wellFormed() : "invariant broken in addAfter";
+        if (p == null) throw new NullPointerException("No part defined");
         if (function == null) throw new IllegalStateException("No function defined");
         if (size+1 > Integer.MAX_VALUE) throw new OutOfMemoryError("capacity beyond the maximum memory");
         ensureCapacity(size + 1);
