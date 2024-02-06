@@ -38,15 +38,17 @@ Friday 10pm deadline.*
 ### Review
 
 #### Did I correctly anticipate the difficulties?
+I underestimated the difficulties, especially I took a lot of time to understand the addBefore, addAfter functions it took me two full readings of the textbook related content. 
 
 #### How did the plan go?
-
+I could not strictly follow the initial plan and especially the plan I had wrote in the previous homework. But sticking to the homework's "What you need to do" helped me get through.
 ### Preview
 
 #### What should I do differently for next week's homework assignment?
+Ask questions more often is what I have realized would have helped me, I was active in the previous assignment to ask/answer the questions I plan to stick with actively asking my questions and attending the tutoring services if needed.
 
 #### Do I need more resources?
-
+As I have wrote before I plan to attend the tutoring services if I find myself really stuck or for that matter confront the professor on a one on one meeting if necessary. 
 ## Optional Feedback
 
 ### Comments (optional)
